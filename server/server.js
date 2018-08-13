@@ -22,9 +22,20 @@ const tcpServer = net.createServer(function(socket) {
   socket.on('end', function() {
     lobby.leftSystem(socket)
   });
+
+  socket.on('error', (err) => {
+    console.log('socket', socket.id)
+    lobby.leftSystem(socket)
+    console.log(err);
+  })
   
 });
 
-tcpServer.on('error', console.error);
+tcpServer.on('error', () => {
+  console.error('error')
+});
 
-tcpServer.listen(TCP_PORT, HOST);
+tcpServer.listen(TCP_PORT, HOST, () => {
+  console.log(`Server listening on ${HOST}:${TCP_PORT}`);
+});
+

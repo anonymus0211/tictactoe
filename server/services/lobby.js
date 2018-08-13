@@ -2,6 +2,7 @@
 
 const hat = require('hat');
 const { sendResponse } = require('../helpers/response');
+const commandList = require('../helpers/commandList');
 
 let lobbyInstance = null;
 
@@ -42,18 +43,18 @@ class Lobby {
   }
 
   sendLobbyInfo(socket) {
-    sendResponse(socket, this.lobbyInfo(socket))
+    sendResponse(socket, commandList.getLobby, this.lobbyInfo(socket));
   }
 
   broadcast(socket,info) {
     this.clients.filter(c => c.id != socket.id).forEach( client => {
-      sendResponse(client, { message: info });
+      sendResponse(client, commandList.sysMessage, info);
     });
   }
   
   broadcastLobbyChange(socket) {
     this.clients.filter(c => c.id != socket.id ).forEach( client => {
-      sendResponse(client, this.lobbyInfo(client));
+      sendResponse(client, commandList.getLobby, this.lobbyInfo(client));
     });
   }
 }

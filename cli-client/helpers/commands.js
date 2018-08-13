@@ -1,7 +1,9 @@
 'use strict';
 
 module.exports = {
-  sysMessage: 'sysMessage',
+  help: 'help',
+  exit: 'exit',
   getLobby: 'getLobby',
   gameWith: 'gameWith',
+  sysMessage: 'sysMessage',
 };

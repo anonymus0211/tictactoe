@@ -9,8 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.4.1",
+    "cliui": "^4.1.0",
     "hat": "0.0.3",
     "joi": "^13.6.0",
+    "prompt-sync": "^4.1.6",
     "ws": "^6.0.0"
   }
 }

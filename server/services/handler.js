@@ -2,18 +2,32 @@
 
 const Joi = require('joi');
 
-const { commandList, response } = require('../helpers');
+const { commandList, response, payloadValidator } = require('../helpers');
 const {
   parseInputData, 
   sendError, 
   sendResponse
 } = response;
 const lobby = require('./lobby');
+const gameCollection = require('./gameCollection');
 
 const baseSchema = Joi.object().keys({
   command: Joi.string().required(),
   payload: Joi.object(),
 });
+
+function validatePayload(validator, payload) {
+  if (!payload) {
+    throw 'No payload Command';
+  }
+  const { error, value } = Joi.validate(payload, validator);
+
+  if (error) {
+    throw error.message;
+  }
+
+  return value;
+}
 
 
 module.exports = function handler(socketData) {
@@ -26,16 +40,23 @@ module.exports = function handler(socketData) {
   }
   console.log(data);
 
-  switch (data.command) {
-    case commandList.getLobby:
-      return lobby.sendLobbyInfo(this);
-      break;
+  try {
+    switch (data.command) {
+      case commandList.getLobby:
+        return lobby.sendLobbyInfo(this);
+        break;
+      
+      case commandList.gameWith:
+        const payload = validatePayload(payloadValidator.gameWith, data.payload)
+        makePrivateGame(socket, payload);
+        break;
     
-    case commandList.gameWith:
-      makePrivateGame(socket, data);
-      break;
-  
-    default:
-      break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.error(error);
+    sendError(this, error);
   }
+  
 }

@@ -9,11 +9,12 @@ const parseInputData = (socketData) => {
   }
 }
 
-const sendResponse = (socket, data, error = null) => {
+const sendResponse = (socket, command, data, error = null) => {
   const resp = {};
   if (error) {
     resp.error = error;
   } else {
+    resp.command = command;
     resp.data = data;
   }
 
