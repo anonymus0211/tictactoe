@@ -103,12 +103,35 @@ module.exports = {
     });
 
     ui.div({
-      text: "help",
+      text: "draw",
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "Print commands"
+      text: "draw your symbol to board"
+    }, {
+      text: chalk.bold('draw [column] [row]')
     });
+
+    ui.div({
+      text: "gameList",
+      width: 20,
+      padding: [0, 4, 0, 4],
+    }, {
+      text: "get back gameList"
+    }, {
+      text: chalk.bold('gameList')
+    });
+
+    ui.div({
+      text: "spec",
+      width: 20,
+      padding: [0, 4, 0, 4],
+    }, {
+      text: "Be a spectator in a game"
+    }, {
+      text: chalk.bold('spec [gameId]')
+    });
+
 
     printOutput();
   },
@@ -153,6 +176,97 @@ module.exports = {
         align: 'center',
         padding: [1,0,2,0],
       })
+    }
+
+    printOutput();
+  },
+
+  initBoard(inputBoard) {
+    let board = Object.assign(inputBoard);
+    board = board.map(row => {
+      return row.map(item => {
+        return item === 0 ? ' ' : item;
+      });
+    });
+    ui.div({
+      text: chalk.green('The Board'),
+      padding: [1,0,1,0],
+      align: 'center'
+    })
+    ui.div({
+      text: ' 1  2  3 ',
+      align: 'center',
+    });
+    ui.div({
+      text: '~~~~~~~~~~~~~',
+      align: 'center',
+    });
+    ui.div({
+      text: `1 | ${board[0][0]} | ${board[0][1]} | ${board[0][2]} |`,
+      align: 'center',
+    });
+    ui.div({
+      text: `2 | ${board[1][0]} | ${board[1][1]} | ${board[1][2]} |`,
+      align: 'center',
+    });
+    ui.div({
+      text: `3 | ${board[2][0]} | ${board[2][1]} | ${board[2][2]} |`,
+      align: 'center',
+    });
+    ui.div({
+      text: '~~~~~~~~~~~~~',
+      align: 'center',
+    });
+    ui.div({
+      text: '- - - - - - - - - - -',
+      padding: [1,0,1,0],
+      align: 'center',
+    });
+
+    printOutput();
+  },
+
+  nextMove(current, next) {
+    if(current === next) {
+      ui.div({
+        text: 'It is your turn, make a move',
+      });
+    } else {
+      ui.div({
+        text: 'Opponent turn, wait for it',
+      });
+    }
+
+    printOutput();
+  },
+
+  printGameList(gameList) {
+    if (gameList.length <= 0) {
+      showMessage('There are no running games');
+    } else {
+      ui.div({
+        text: chalk.green('Gamelist'),
+        align: 'center',
+        padding: [1,0,1,0],
+      });
+
+      ui.div({
+        text: chalk.bold('Game ID'),
+        width: 20,
+        align: 'center',
+      }, {
+        text: chalk.bold('Players'),
+      })
+      gameList.forEach((game) => {
+        ui.div({
+          text: game.id,
+          width: 20,
+          align: 'center'
+        }, {
+          text: game.players.join(','),
+        });
+      })
+      
     }
 
     printOutput();

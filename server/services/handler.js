@@ -29,7 +29,6 @@ function validatePayload(validator, payload) {
   return value;
 }
 
-
 module.exports = function handler(socketData) {
   const input = parseInputData(socketData);
   const { error, value: data } = Joi.validate(input, baseSchema);
@@ -38,7 +37,6 @@ module.exports = function handler(socketData) {
     console.error(error);
     sendError(this, error.message);
   }
-  console.log(data);
 
   try {
     switch (data.command) {
@@ -47,11 +45,28 @@ module.exports = function handler(socketData) {
         break;
       
       case commandList.gameWith:
-        const payload = validatePayload(payloadValidator.gameWith, data.payload)
-        makePrivateGame(socket, payload);
+        const payload = validatePayload(payloadValidator.gameWith, data.payload);
+        gameCollection.add(this, payload.guestId);
         break;
-    
+
+      case commandList.draw:
+        console.log(data.payload)
+        const { gameId, x, y } = validatePayload(payloadValidator.draw, data.payload);
+        const game = gameCollection.getGame(gameId);
+        if (!game) {
+          sendError(this, 'Game not found');
+        }
+        if(game.makeStep(this, x, y)) {
+          // if return true, match is over
+          // remove game and move back users to lobby
+          gameCollection.remove(game);
+        }
+        break;
+      case commandList.gameList:
+        gameCollection.sendGameList(this);
+        break;
       default:
+        sendError(this, 'Command is not supported');
         break;
     }
   } catch (error) {

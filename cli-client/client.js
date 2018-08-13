@@ -24,7 +24,10 @@ let client = null;
  */
 const sharedState = {
   inGame: false,
-}
+  id: null,
+  gameId: null,
+  nickName: '',
+};
 
 ui.openingText();
 

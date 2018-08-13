@@ -20,6 +20,7 @@ class InputHandler {
         break;
       case commands.exit:
         ui.exitText();
+        this.client.client.end();
         process.exit(0);
         break;
       case commands.getLobby:
@@ -28,6 +29,15 @@ class InputHandler {
       case commands.gameWith:
         this._gameWith(...args);
         break;
+      case commands.draw:
+        this._draw(...args);
+        break;
+      case commands.gameList:
+        this._getGameList();
+        break;
+      case commands.spec:
+        this._specGame(...args);
+        break;
       default:
         ui.badCommand();
         break;
@@ -35,11 +45,26 @@ class InputHandler {
   }
 
   _getLobby() {
-    this.client.sendData({ command: 'getLobby' });
+    this.client.sendData(tcpCommands.getLobby());
   }
 
   _gameWith(player) {
     this.client.sendData(tcpCommands.gameWith(player));
+  }
+
+  _draw(x, y) {
+    if ( ((x < 1) || (x > 3)) || ((y < 1) || (y > 3)) ) {
+      return ui.showError('Wrong coordinates. Try again!');
+    }
+    this.client.sendData(tcpCommands.draw(this.sharedState.gameId, x, y));
+  }
+
+  _getGameList() {
+    this.client.sendData(tcpCommands.gameList());
+  }
+
+  _specGame(gameId) {
+    this.client.sendData(tcpCommands.spec(gameId));
   }
 }
 

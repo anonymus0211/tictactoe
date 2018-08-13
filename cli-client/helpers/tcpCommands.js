@@ -1,6 +1,27 @@
 'use strict';
 
 module.exports = {
+  getLobby: () => {
+    return {
+      command: 'getLobby',
+    };
+  },
+
+  gameList: () => {
+    return {
+      command: 'gameList',
+    };
+  },
+
+  spec: (gameId) => {
+    return {
+      command: 'spec',
+      payload: {
+        gameId,
+      },
+    };
+  },
+
   gameWith: (name) => {
     return {
       command: 'gameWith',
@@ -10,5 +31,14 @@ module.exports = {
     };
   },
 
-  
+  draw: (gameId, x, y ) => {
+    return {
+      command: 'draw',
+      payload: {
+        gameId,
+        x,
+        y,
+      },
+    };
+  },
 }

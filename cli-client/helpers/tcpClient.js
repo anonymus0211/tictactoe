@@ -12,12 +12,18 @@ class TcpClient {
     this._initClient();
     this.inGame = false;
     this.sharedState = sharedState;
+    this.buff = '';
   }
 
   _initClient() {
     this.client.connect(this.port, this.host, this._clientReady.bind(this));
 
-    this.client.on('data', this._onData.bind(this));
+    this.client.on('data', (data) => {
+      const responses = this._deserialize(data);
+      for( let res of responses) {
+        this._onData(res);
+      }
+    });
 
     this.client.on('close', function() {
       console.log('Connection closed');
@@ -38,10 +44,23 @@ class TcpClient {
     ui.clientConnected();
   }
 
-  _onData(data) {
+  _deserialize(string) {
+    const objects = [];
+    let i;
+    let l = 0;
+    this.buff += Buffer.from(string).toString();
+    while ((i = this.buff.indexOf('\n', l)) !== -1) {
+      objects.push(JSON.parse(this.buff.slice(l, i)));
+      l = i + 1;
+    }
+    if (l) this.buff = this.buff.slice(l);
+    return objects;
+  }
+
+  _onData(parsed) {
     try {
       // ui.showMessage(data.toString());
-      const parsed = JSON.parse(data.toString())
+      //const parsed = JSON.parse(data.toString())
     
       if (parsed.error) {
         return ui.showError(parsed.error);
@@ -57,7 +76,27 @@ class TcpClient {
         case commands.sysMessage:
           ui.showMessage(parsed.data);
           break;
-      
+        case commands.initInfo:
+          this.sharedState.id = parsed.data.id;
+          this.sharedState.nickName = parsed.data.nickName;
+          ui.showMessage(`Your id: ${this.sharedState.id}, nickName: ${this.sharedState.nickName}`);
+          break;
+        case commands.gameBoard:
+          this.sharedState.inGame = true;
+          this.sharedState.gameId = parsed.data.id;
+          ui.initBoard(parsed.data.board);
+          ui.nextMove(this.sharedState.id, parsed.data.nextPlayer);
+          break;
+        case commands.backToLobby:
+          if (this.sharedState.inGame) {
+            ui.showMessage('You are moved back to lobby');
+          }
+          this.sharedState.inGame = false;
+          this.sharedState.gameId = null;
+          break;
+        case commands.gameList:
+          ui.printGameList(parsed.data);
+          break;
         default:
           ui.showError('Invalid TCP command received');
           ui.showError(JSON.stringify(parsed, null, 2));

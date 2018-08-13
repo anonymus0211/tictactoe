@@ -10,7 +10,7 @@ const parseInputData = (socketData) => {
 }
 
 const sendResponse = (socket, command, data, error = null) => {
-  const resp = {};
+  let resp = {};
   if (error) {
     resp.error = error;
   } else {
@@ -18,11 +18,12 @@ const sendResponse = (socket, command, data, error = null) => {
     resp.data = data;
   }
 
-  return setImmediate(() => socket.write(JSON.stringify(resp)));
+  resp = JSON.stringify(resp) + '\n';
+  return socket.write(resp);
 }
 
 const sendError = (socket, error) => {
-  return sendResponse(socket, null, error);
+  return sendResponse(socket, null, null, error);
 }
 
 module.exports = {
