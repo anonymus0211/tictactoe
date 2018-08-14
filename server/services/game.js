@@ -37,13 +37,22 @@ class Game {
   }
 
   removeSpectator(spectator) {
-    this.spectators.splice(this.spectators.indexOf(spectator), 1);
+    const index = this.spectators.indexOf(spectator);
+    if (index >= 0) {
+      this.spectators.splice(index, 1);
+    }
   }
 
-  _spectatorInfo() {
-    this.spectators.forEach(spectator => {
-      sendResponse(spectator, commands.gameSpec, this.gameResponse(true));
-    });
+  giveUpBy(player) {
+    if (player.id === this.player1.id) {
+      sendResponse(this.player2, commands.sysMessage, `${this.player1.nickName} give up! You are the winner!`);
+      this._giveUpToSpectators(player, this.player2);
+    } else if (player.id === this.player2.id) {
+      sendResponse(this.player1, commands.sysMessage, `${this.player2.nickName} give up! You are the winner!`);
+      this._giveUpToSpectators(player, this.player1);
+    } else {
+      sendError(player, 'You are not a player');
+    }
   }
 
   /**
@@ -135,7 +144,19 @@ class Game {
     return [ false, false];
   }
 
-  gameResponse(isSpectator = false) {
+  _spectatorInfo() {
+    this.spectators.forEach(spectator => {
+      sendResponse(spectator, commands.gameSpec, this.gameResponse({ isSpectator: true }));
+    });
+  }
+
+  _giveUpToSpectators(giveUp, winner) {
+    this.spectators.forEach(spectator => {
+      sendResponse(spectator, commands.sysMessage, `${giveUp.nickName} give up! ${winner.nickName} is the winner!`);
+    });
+  }
+
+  gameResponse({ isSpectator = false } = {}) {
     return {
       id: this.id,
       board: this.board,
@@ -153,8 +174,6 @@ class Game {
       ],
     }
   }
-
-
 }
 
 module.exports = Game;

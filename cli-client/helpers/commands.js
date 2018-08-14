@@ -8,8 +8,11 @@ module.exports = {
   gameWith: 'gameWith',
   gameBoard: 'gameBoard',
   sysMessage: 'sysMessage',
+  giveUp: 'giveUp',
   draw: 'draw',
   backToLobby: 'backToLobby',
   gameList: 'gameList',
+  gameSpec: 'gameSpec',
   spec: 'spec',
+  leaveSpec: 'leaveSpec',
 };

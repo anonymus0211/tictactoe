@@ -49,21 +49,36 @@ module.exports = function handler(socketData) {
         gameCollection.add(this, payload.guestId);
         break;
 
-      case commandList.draw:
-        console.log(data.payload)
-        const { gameId, x, y } = validatePayload(payloadValidator.draw, data.payload);
-        const game = gameCollection.getGame(gameId);
-        if (!game) {
-          sendError(this, 'Game not found');
-        }
-        if(game.makeStep(this, x, y)) {
-          // if return true, match is over
-          // remove game and move back users to lobby
-          gameCollection.remove(game);
+      case commandList.draw: {
+          const { gameId, x, y } = validatePayload(payloadValidator.draw, data.payload);
+          const game = gameCollection.getGame(gameId);
+          if (!game) {
+            sendError(this, 'Game not found');
+          }
+          if(game.makeStep(this, x, y)) {
+            // if return true, match is over
+            // remove game and move back users to lobby
+            gameCollection.remove(game);
+          }
         }
         break;
       case commandList.gameList:
         gameCollection.sendGameList(this);
+        break;
+      case commandList.spec: {
+          const { gameId } = validatePayload(payloadValidator.spec, data.payload);
+          gameCollection.addSpectatorToGame(gameId, this);
+        }
+        break;
+      case commandList.leaveSpec: {
+          const { gameId } = validatePayload(payloadValidator.leaveSpec, data.payload);
+          gameCollection.removeSpectatorFromGame(gameId, this);
+        }
+        break;
+      case commandList.giveUp: {
+          const { gameId } = validatePayload(payloadValidator.giveUp, data.payload);
+          gameCollection.giveUp(gameId, this);
+        }
         break;
       default:
         sendError(this, 'Command is not supported');

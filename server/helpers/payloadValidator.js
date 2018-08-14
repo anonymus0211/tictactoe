@@ -14,4 +14,10 @@ module.exports = {
   spec: Joi.object().keys({
     gameId: Joi.string().required(),
   }),
+  leaveSpec: Joi.object().keys({
+    gameId: Joi.string().required(),
+  }),
+  giveUp: Joi.object().keys({
+    gameId: Joi.string().required(),
+  }),
 };

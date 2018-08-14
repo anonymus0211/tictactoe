@@ -22,6 +22,24 @@ module.exports = {
     };
   },
 
+  leaveSpec: (gameId) => {
+    return {
+      command: 'leaveSpec',
+      payload: {
+        gameId,
+      },
+    };
+  },
+
+  giveUp: (gameId) => {
+    return {
+      command: 'giveUp',
+      payload: {
+        gameId,
+      },
+    };
+  },
+
   gameWith: (name) => {
     return {
       command: 'gameWith',

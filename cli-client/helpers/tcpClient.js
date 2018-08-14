@@ -59,8 +59,6 @@ class TcpClient {
 
   _onData(parsed) {
     try {
-      // ui.showMessage(data.toString());
-      //const parsed = JSON.parse(data.toString())
     
       if (parsed.error) {
         return ui.showError(parsed.error);
@@ -84,6 +82,7 @@ class TcpClient {
         case commands.gameBoard:
           this.sharedState.inGame = true;
           this.sharedState.gameId = parsed.data.id;
+          this.sharedState.isSpectator = parsed.data.isSpectator;
           ui.initBoard(parsed.data.board);
           ui.nextMove(this.sharedState.id, parsed.data.nextPlayer);
           break;
@@ -92,10 +91,17 @@ class TcpClient {
             ui.showMessage('You are moved back to lobby');
           }
           this.sharedState.inGame = false;
+          this.sharedState.isSpectator = false;
           this.sharedState.gameId = null;
           break;
         case commands.gameList:
           ui.printGameList(parsed.data);
+          break;
+        case commands.gameSpec:
+          this.sharedState.inGame = true;
+          this.sharedState.gameId = parsed.data.id;
+          this.sharedState.isSpectator = parsed.data.isSpectator;
+          ui.initBoard(parsed.data.board);
           break;
         default:
           ui.showError('Invalid TCP command received');

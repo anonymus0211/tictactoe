@@ -7,9 +7,10 @@ module.exports = {
   gameWith: 'gameWith',
   gameBoard: 'gameBoard',
   gameSpec: 'gameSpec',
-  abandon: 'abandon',
+  giveUp: 'giveUp',
   draw: 'draw',
   backToLobby: 'backToLobby',
   gameList: 'gameList',
   spec: 'spec',
+  leaveSpec: 'leaveSpec',
 };

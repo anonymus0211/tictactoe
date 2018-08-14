@@ -24,6 +24,7 @@ let client = null;
  */
 const sharedState = {
   inGame: false,
+  isSpectator: false,
   id: null,
   gameId: null,
   nickName: '',

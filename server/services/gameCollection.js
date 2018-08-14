@@ -86,12 +86,40 @@ class GameCollection {
     sendResponse(socket, commands.gameList, data);
   }
 
-  addSpectatorToGame(game, specator) {
-
+  addSpectatorToGame(gameId, spectator) {
+    const game = this.getGame(gameId);
+    if (!game) {
+      return sendError(spectator, 'Game is not found');
+    }
+    game.addSpectator(spectator);
+    lobby.remove(spectator);
+    sendResponse(
+      spectator, 
+      commands.sysMessage, 
+      `You are specatating the game between: ${game.player1.nickName}, ${game.player2.nickName}`,
+    );
+    sendResponse(spectator, commands.gameSpec, game.gameResponse({ isSpectator: true }));
   }
 
-  removeSpectatorFromGame(game, spectator) {
-    
+  removeSpectatorFromGame(gameId, spectator) {
+    const game = this.getGame(gameId);
+    if (!game) {
+      return sendError(spectator, 'Game is not found');
+    }
+    game.removeSpectator(spectator);
+    sendResponse(spectator, commands.sysMessage, `You are not spectating the game (${gameId}) anymore`);
+    lobby.add(spectator);
+  }
+
+  giveUp(gameId, player) {
+    const game = this.getGame(gameId);
+    if (!game) {
+      return sendError(spectator, 'Game is not found');
+    }
+
+    game.giveUpBy(player);
+
+    this.removeByPlayer(player);
   }
 
 }
