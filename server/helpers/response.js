@@ -7,7 +7,7 @@ const parseInputData = (socketData) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 const sendResponse = (socket, command, data, error = null) => {
   let resp = {};
@@ -20,14 +20,14 @@ const sendResponse = (socket, command, data, error = null) => {
 
   resp = JSON.stringify(resp) + '\n';
   return socket.write(resp);
-}
+};
 
 const sendError = (socket, error) => {
   return sendResponse(socket, null, null, error);
-}
+};
 
 module.exports = {
   parseInputData,
   sendResponse,
   sendError,
-}
+};

@@ -21,10 +21,10 @@ class Game {
 
   sendInit() {  
     sendResponse(this.player1, commands.sysMessage, `Game started with: ${this.player2.nickName}`);
-    sendResponse(this.player1, commands.sysMessage, 'You are `X`')
+    sendResponse(this.player1, commands.sysMessage, 'You are `X`');
     sendResponse(this.player1, commands.gameBoard, this.gameResponse());
     sendResponse(this.player2, commands.sysMessage, `Game started with ${this.player1.nickName}`);
-    sendResponse(this.player2, commands.sysMessage, 'You are `O`')
+    sendResponse(this.player2, commands.sysMessage, 'You are `O`');
     sendResponse(this.player2, commands.gameBoard, this.gameResponse());
     this._spectatorInfo();
   }
@@ -99,14 +99,14 @@ class Game {
       sendResponse(this.player1, commands.sysMessage, 'It is a draw');
       sendResponse(this.player2, commands.sysMessage, 'It is a draw');
       // Game ended higher level make cleanup
-      return true
+      return true;
     } else {
       // next move
       this.nextPlayer = nextPlayer;
       this._updateParticipants();
     }
 
-    return false
+    return false;
   }
 
   _updateParticipants() {
@@ -116,26 +116,26 @@ class Game {
   }
 
   _checkWinner() {
-    if ((this.board[0][0] + this.board[1][1] + this.board[2][2] === "XXX") ||
-        (this.board[0][0] + this.board[1][1] + this.board[2][2] === "OOO") ||
-        ((this.board[0][2] + this.board[1][1] + this.board[2][0] === "XXX") ||
-        (this.board[0][2] + this.board[1][1] + this.board[2][0] === "OOO"))) {
+    if ((this.board[0][0] + this.board[1][1] + this.board[2][2] === 'XXX') ||
+        (this.board[0][0] + this.board[1][1] + this.board[2][2] === 'OOO') ||
+        ((this.board[0][2] + this.board[1][1] + this.board[2][0] === 'XXX') ||
+        (this.board[0][2] + this.board[1][1] + this.board[2][0] === 'OOO'))) {
       return [true, null];
     }
-    else if ((this.board[0][0] + this.board[0][1] + this.board[0][2] === "XXX") ||
-      (this.board[0][0] + this.board[0][1] + this.board[0][2] === "OOO") ||
-      (this.board[1][0] + this.board[1][1] + this.board[1][2] === "XXX") ||
-      (this.board[1][0] + this.board[1][1] + this.board[1][2] === "OOO") ||
-      (this.board[2][0] + this.board[2][1] + this.board[2][2] === "XXX") ||
-      (this.board[2][0] + this.board[2][1] + this.board[2][2] === "OOO")) {
+    else if ((this.board[0][0] + this.board[0][1] + this.board[0][2] === 'XXX') ||
+      (this.board[0][0] + this.board[0][1] + this.board[0][2] === 'OOO') ||
+      (this.board[1][0] + this.board[1][1] + this.board[1][2] === 'XXX') ||
+      (this.board[1][0] + this.board[1][1] + this.board[1][2] === 'OOO') ||
+      (this.board[2][0] + this.board[2][1] + this.board[2][2] === 'XXX') ||
+      (this.board[2][0] + this.board[2][1] + this.board[2][2] === 'OOO')) {
       return [true, null];
     }
-    else if ((this.board[0][0] + this.board[1][0] + this.board[2][0] === "XXX") ||
-      (this.board[0][0] + this.board[1][0] + this.board[2][0] === "OOO") ||
-      (this.board[0][1] + this.board[1][1] + this.board[2][1] === "XXX") ||
-      (this.board[0][1] + this.board[1][1] + this.board[2][1] === "OOO") ||
-      (this.board[0][2] + this.board[1][2] + this.board[2][2] === "XXX") ||
-      (this.board[0][2] + this.board[1][2] + this.board[2][2] === "OOO")) {
+    else if ((this.board[0][0] + this.board[1][0] + this.board[2][0] === 'XXX') ||
+      (this.board[0][0] + this.board[1][0] + this.board[2][0] === 'OOO') ||
+      (this.board[0][1] + this.board[1][1] + this.board[2][1] === 'XXX') ||
+      (this.board[0][1] + this.board[1][1] + this.board[2][1] === 'OOO') ||
+      (this.board[0][2] + this.board[1][2] + this.board[2][2] === 'XXX') ||
+      (this.board[0][2] + this.board[1][2] + this.board[2][2] === 'OOO')) {
       return [true, null];
     } else if (this.moveCounter >= 9) {
       return [false, true];
@@ -172,7 +172,7 @@ class Game {
         this.player1.nickName,
         this.player2.nickName
       ],
-    }
+    };
   }
 }
 

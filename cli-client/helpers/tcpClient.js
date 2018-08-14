@@ -29,15 +29,15 @@ class TcpClient {
       console.log('Connection closed');
       this.client.setTimeout(2000, function() {
         this.client.connect(this.port, this.host);
-      })
+      });
     });
 
     this.client.on('error', function(e) {
       console.log(e);
       this.client.setTimeout(2000, function() {
         this.client.connect(this.port, this.host);
-      })
-    })
+      });
+    });
   }
 
   _clientReady() {
@@ -53,7 +53,9 @@ class TcpClient {
       objects.push(JSON.parse(this.buff.slice(l, i)));
       l = i + 1;
     }
-    if (l) this.buff = this.buff.slice(l);
+    if (l) {
+      this.buff = this.buff.slice(l);
+    }
     return objects;
   }
 

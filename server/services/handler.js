@@ -6,7 +6,6 @@ const { commandList, response, payloadValidator } = require('../helpers');
 const {
   parseInputData, 
   sendError, 
-  sendResponse
 } = response;
 const lobby = require('./lobby');
 const gameCollection = require('./gameCollection');
@@ -89,4 +88,4 @@ module.exports = function handler(socketData) {
     sendError(this, error);
   }
   
-}
+};

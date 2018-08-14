@@ -40,7 +40,7 @@ class InputHandler {
   }
 
   handler(input) {
-    console.log("you entered: [" + input + "]");
+    console.log(`you entered: [ ${input} ]`);
     const [command, ...args] = input.split(' ');
 
     const { inGame, isSpectator } = this.sharedState;

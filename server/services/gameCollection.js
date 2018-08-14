@@ -16,8 +16,8 @@ class GameCollection {
 
   add(currentSocket, otherId) {
     const inGame = this.games.some((game) => {
-      game.player1.id === currentSocket.id ||
-      game.player2.id === otherId
+      return game.player1.id === currentSocket.id ||
+        game.player2.id === otherId;
     });
 
     if (inGame) {
@@ -57,7 +57,7 @@ class GameCollection {
         if(!spec.destroyed) {
           lobby.add(spec);
         }
-      })
+      });
     }
 
     const gameIndex = this.games.indexOf(game);
@@ -69,7 +69,7 @@ class GameCollection {
   removeByPlayer(socket) {
     const game = this.games.find(game => {
       return game.player1.id === socket.id ||
-             game.player2.id === socket.id
+             game.player2.id === socket.id;
     });
 
     if (game) {
@@ -114,7 +114,7 @@ class GameCollection {
   giveUp(gameId, player) {
     const game = this.getGame(gameId);
     if (!game) {
-      return sendError(spectator, 'Game is not found');
+      return sendError(player, 'Game is not found');
     }
 
     game.giveUpBy(player);

@@ -1,7 +1,6 @@
 'use strict';
 
 const net = require('net');
-const hat = require('hat');
 
 const lobby = require('./services/lobby');
 const gameCollection = require('./services/gameCollection');
@@ -28,18 +27,16 @@ const tcpServer = net.createServer(function(socket) {
   });
 
   socket.on('error', (err) => {
-    console.log('socket', socket.id)
+    console.log('socket', socket.id);
     lobby.leftSystem(socket);
     // cleanup game
     gameCollection.removeByPlayer(socket);
     console.log(err);
-
-  })
-  
+  });
 });
 
 tcpServer.on('error', () => {
-  console.error('error')
+  console.error('error');
 });
 
 tcpServer.listen(TCP_PORT, HOST, () => {

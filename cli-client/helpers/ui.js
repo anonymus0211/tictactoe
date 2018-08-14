@@ -37,7 +37,7 @@ module.exports = {
 
     ui.div({
       text: 'To join the server please type `join`',
-    })
+    });
 
     ui.div({
       text: 'To listing possible commands, type `help`',
@@ -49,7 +49,7 @@ module.exports = {
   clientConnected: () => {
     ui.div({
       text: chalk.green('Client connected to server successfully'),
-    })
+    });
 
     printOutput();
   },
@@ -77,61 +77,88 @@ module.exports = {
     });
 
     ui.div({
-      text: "help",
+      text: 'help',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "Print commands"
+      text: 'Print commands',
     });
 
     ui.div({
-      text: "getLobby",
+      text: 'exit',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "list players from server"
+      text: 'Exit from the program',
     });
 
     ui.div({
-      text: "gameWith",
+      text: 'getLobby',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "Start a game with someone"
+      text: 'list players from server',
+    });
+
+    ui.div({
+      text: 'gameWith',
+      width: 20,
+      padding: [0, 4, 0, 4],
+    }, {
+      text: 'Start a game with someone',
     }, {
       text: chalk.bold('gameWith [nickName|id]')
     });
 
     ui.div({
-      text: "draw",
+      text: 'draw',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "draw your symbol to board"
+      text: 'draw your symbol to board',
     }, {
       text: chalk.bold('draw [column] [row]')
     });
 
     ui.div({
-      text: "gameList",
+      text: 'gameList',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "get back gameList"
+      text: 'get back gameList',
     }, {
       text: chalk.bold('gameList')
     });
 
     ui.div({
-      text: "spec",
+      text: 'spec',
       width: 20,
       padding: [0, 4, 0, 4],
     }, {
-      text: "Be a spectator in a game"
+      text: 'Be a spectator in a game',
     }, {
       text: chalk.bold('spec [gameId]')
     });
 
+    ui.div({
+      text: 'leaveSpec',
+      width: 20,
+      padding: [0, 4, 0, 4],
+    }, {
+      text: 'Stop specate a game',
+    }, {
+      text: chalk.bold('leaveSpec [gameId]')
+    });
+
+    ui.div({
+      text: 'giveUp',
+      width: 20,
+      padding: [0, 4, 0, 4],
+    }, {
+      text: 'Give up the match',
+    }, {
+      text: chalk.bold('giveUp')
+    });
 
     printOutput();
   },
@@ -139,7 +166,7 @@ module.exports = {
   badCommand: () => {
     ui.div({
       text: chalk.red('Command is not supported, please use `help` for listing commands'),
-    })
+    });
 
     printOutput();
   },
@@ -147,7 +174,7 @@ module.exports = {
   exitText: () => {
     ui.div({
       text: chalk.green('Thank you for playing the game.'),
-    })
+    });
 
     printOutput();
   },
@@ -163,7 +190,7 @@ module.exports = {
         text: chalk.green('The lobby'),
         align: 'center',
         padding: [2,0,2,0],
-      })
+      });
       lobby.forEach((item) => {
         ui.div({
           text: `nickName: ${chalk.bold(item.nickName)}`,
@@ -175,7 +202,7 @@ module.exports = {
         text: 'Select player with `gameWith guestName` command',
         align: 'center',
         padding: [1,0,2,0],
-      })
+      });
     }
 
     printOutput();
@@ -192,7 +219,7 @@ module.exports = {
       text: chalk.green('The Board'),
       padding: [1,0,1,0],
       align: 'center'
-    })
+    });
     ui.div({
       text: ' 1  2  3 ',
       align: 'center',
@@ -256,7 +283,7 @@ module.exports = {
         align: 'center',
       }, {
         text: chalk.bold('Players'),
-      })
+      });
       gameList.forEach((game) => {
         ui.div({
           text: game.id,
@@ -265,7 +292,7 @@ module.exports = {
         }, {
           text: game.players.join(','),
         });
-      })
+      });
       
     }
 

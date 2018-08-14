@@ -1,12 +1,11 @@
 'use strict';
-const net = require('net');
-const readline = require('readline');
 
+const readline = require('readline');
 
 const TcpClient = require('./helpers/tcpClient');
 const InputHandler = require('./helpers/inputHandler');
 const ui = require('./helpers/ui');
-const commands = require('./helpers/commands');
+
 
 const prompt = readline.createInterface({
   input: process.stdin,

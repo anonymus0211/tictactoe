@@ -41,8 +41,8 @@ class Lobby {
   }
 
   lobbyInfo(socket) {
-    return this.clients.filter(c => c.id!=socket.id).map(c => { 
-      return { id: c.id, nickName: c.nickName }
+    return this.clients.filter(c => c.id !== socket.id).map(c => { 
+      return { id: c.id, nickName: c.nickName };
     });
   }
 
@@ -51,13 +51,13 @@ class Lobby {
   }
 
   broadcast(socket,info) {
-    this.clients.filter(c => c.id != socket.id).forEach( client => {
+    this.clients.filter(c => c.id !== socket.id).forEach( client => {
       sendResponse(client, commandList.sysMessage, info);
     });
   }
   
   broadcastLobbyChange(socket) {
-    this.clients.filter(c => c.id != socket.id ).forEach( client => {
+    this.clients.filter(c => c.id !== socket.id ).forEach( client => {
       sendResponse(client, commandList.getLobby, this.lobbyInfo(client));
     });
   }
@@ -70,7 +70,8 @@ class Lobby {
     const data = {
       id: socket.id,
       nickName: socket.nickName,
-    }
+    };
+    
     sendResponse(socket, commandList.initInfo, data);
   }
 }
