@@ -5,10 +5,12 @@ const sinon = require('sinon');
 const hat = require('hat');
 
 module.exports = {
-  createStubSocket(messages, withId = true) {
+  createStubSocket(messages = null, withId = true) {
     const socket = new net.Socket();
     sinon.stub(socket, 'write').callsFake(function (data) {
-      messages.push(JSON.parse(data));
+      if (messages) {
+        messages.push(JSON.parse(data));
+      }
       return null;
     });
     if (withId) {

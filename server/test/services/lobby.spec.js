@@ -7,7 +7,7 @@ const { createStubSocket } = require('../helper');
 const lobby = require('../../services/lobby');
 
 // re-init lobby
-afterEach(function () {
+afterEach(() => {
   lobby.clients = [];
   lobby.guestId = 0;
 });
