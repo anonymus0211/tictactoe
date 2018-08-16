@@ -27,11 +27,6 @@
 export default {
   name: 'lobby',
   props: ['users', 'update', 'startGame'],
-  methods: {
-    clicked(item) {
-      console.log(item.id);
-    },
-  },
   data() {
     return {
       fields: [
