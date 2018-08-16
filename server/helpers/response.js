@@ -19,7 +19,14 @@ const sendResponse = (socket, command, data, error = null) => {
   }
 
   resp = JSON.stringify(resp) + '\n';
-  return socket.write(resp);
+  if (socket.write) {
+    return socket.write(resp);
+  }
+
+  if (socket.send) {
+    return socket.send(resp);
+  }
+  
 };
 
 const sendError = (socket, error) => {

@@ -5,7 +5,8 @@ const Joi = require('joi');
 const { commandList, response, payloadValidator } = require('../helpers');
 const {
   parseInputData, 
-  sendError, 
+  sendError,
+  sendResponse,
 } = response;
 const lobby = require('./lobby');
 const gameCollection = require('./gameCollection');
@@ -37,8 +38,14 @@ module.exports = function handler(socketData) {
     sendError(this, error.message);
   }
 
+  console.log(`New input from ${this.nickName}`);
+  console.log(JSON.stringify(data, null, 2));
+
   try {
     switch (data.command) {
+      case commandList.initInfo:
+        sendResponse(this, commandList.initInfo, { id: this.id, nickName: this.nickName });
+        break;
       case commandList.getLobby:
         return lobby.sendLobbyInfo(this);
         break;

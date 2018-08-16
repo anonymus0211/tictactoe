@@ -157,6 +157,7 @@ class Game {
   }
 
   gameResponse({ isSpectator = false } = {}) {
+    console.log(JSON.stringify(this.board));
     return {
       id: this.id,
       board: this.board,

@@ -1,6 +1,7 @@
 'use strict';
 
 const net = require('net');
+const WebSocket = require('ws');
 
 const lobby = require('./services/lobby');
 const gameCollection = require('./services/gameCollection');
@@ -8,6 +9,7 @@ const handler = require('./services/handler');
 
 const HOST = '127.0.0.1';
 const TCP_PORT = 1337;
+const WS_PORT = 8081;
 
 
 /**
@@ -40,6 +42,36 @@ tcpServer.on('error', () => {
 });
 
 tcpServer.listen(TCP_PORT, HOST, () => {
-  console.log(`Server listening on ${HOST}:${TCP_PORT}`);
+  console.log(`TCP server listening on ${HOST}:${TCP_PORT}`);
 });
+
+
+const wss = new WebSocket.Server({
+  port: WS_PORT,
+}, () => {
+  console.log(`Websocket server listening on ${HOST}:${WS_PORT}`);
+});
+
+wss.on('connection', function(socket) {
+  lobby.addNew(socket);
+ 
+  socket.on('message', handler.bind(socket));
+
+  socket.on('close', () => {
+    // cleanup game
+    gameCollection.removeByPlayer(socket);
+    // cleanup lobby
+    lobby.leftSystem(socket);
+  });
+
+  socket.on('error', (err) => {
+    console.log('socket', socket.id);
+    lobby.leftSystem(socket);
+    // cleanup game
+    gameCollection.removeByPlayer(socket);
+    console.log(err);
+  });
+
+});
+
 
